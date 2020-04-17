@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     private bool _isGround = true;
     private int _moneys = 0;
 
+    public int Money => _moneys;
+
     public event UnityAction Dying;
     public event UnityAction<int> MoneyChanged;
 
@@ -36,6 +38,8 @@ public class Player : MonoBehaviour
         if(collision.GetComponent<Obstacle>() != null)
         {
             Dying?.Invoke();
+            _rigidbody.gravityScale = 0;
+            _rigidbody.velocity = new Vector2(0, 0);
             enabled = false;
         }
         if (collision.TryGetComponent<Money>(out Money money))

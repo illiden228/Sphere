@@ -2,10 +2,13 @@
 
 public class ObstacleSpawner : MonoBehaviour
 {
+    [SerializeField] private Transform[] _spawnPoints;
     [SerializeField] private Wave[] _waves;
     [SerializeField] private Player _player;
+    [SerializeField] private GameObject _moneyTemplate;
 
     private Wave _currentWave;
+    private Transform _currentSpawnPoint;
     private float _timeToNextSpawn = 0;
     private int _currentWaveNumber;
 
@@ -13,7 +16,6 @@ public class ObstacleSpawner : MonoBehaviour
     {
         _currentWaveNumber = 0;
         SetWave(_currentWaveNumber);
-        _timeToNextSpawn = _currentWave.TimeBetweenSpawn;
         _player.Dying += Close;
         _player.MoneyChanged += NextWave;
     }
@@ -23,24 +25,38 @@ public class ObstacleSpawner : MonoBehaviour
         _timeToNextSpawn -= Time.deltaTime;
         if(_timeToNextSpawn < 0)
         {
-            Instantiate(_currentWave.Template);
+            SetSpawnPoint(Random.Range(0, _spawnPoints.Length));
+            CreateObstacle();
+            FillMoney();
             _timeToNextSpawn = _currentWave.TimeBetweenSpawn;
+        }
+    }
+
+    private GameObject CreateObstacle()
+    {
+        return Instantiate(_currentWave.Template, _currentSpawnPoint);
+    }
+
+    private void FillMoney()
+    {
+        foreach(var spawnPoint in _spawnPoints)
+        {
+            if (spawnPoint != _currentSpawnPoint)
+            {
+                Instantiate(_moneyTemplate, spawnPoint);
+            }
         }
     }
 
     private void SetWave(int number)
     {
         _currentWave = _waves[number];
-        Debug.Log(number);
     }
 
     private void NextWave(int playerMoneys)
     {
-        Debug.Log(playerMoneys);
-        Debug.Log(_currentWave.MoneysCountForNextWave);
         if(playerMoneys == _currentWave.MoneysCountForNextWave)
         {
-            Debug.Log("Next");
             if (_currentWaveNumber < _waves.Length - 1)
             {
                 SetWave(++_currentWaveNumber);
@@ -48,9 +64,16 @@ public class ObstacleSpawner : MonoBehaviour
         }
     }
 
+    private void SetSpawnPoint(int number)
+    {
+        _currentSpawnPoint = _spawnPoints[number];
+    }
+
     private void Close()
     {
-        enabled = false;
+        _player.Dying -= Close;
+        _player.MoneyChanged -= NextWave;
+        Destroy(gameObject);
     }
 }
 

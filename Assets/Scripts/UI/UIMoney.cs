@@ -12,7 +12,12 @@ public class UIMoney : MonoBehaviour
     {
         _textMoney = GetComponent<TMP_Text>();
         _player.MoneyChanged += OnMoneyChanged;
-        _textMoney.text = "Монетки: 0";
+        OnMoneyChanged(_player.Money);
+    }
+
+    private void OnDisable()
+    {
+        _player.MoneyChanged -= OnMoneyChanged;
     }
 
     public void OnMoneyChanged(int money)
