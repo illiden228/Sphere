@@ -8,7 +8,7 @@ public class GameOver : MonoBehaviour
 
     private void Start()
     {
-        _player.OnDie += GameOverPanel;
+        _player.Dying += GameOverPanel;
     }
 
     private void GameOverPanel()

@@ -5,18 +5,16 @@ using UnityEngine.Events;
 public class Player : MonoBehaviour
 {
     [SerializeField] private float _jumpForce;
-    private UIMoney _moneyUIText;
     private Rigidbody2D _rigidbody;
     private bool _isGround = true;
     private int _moneys = 0;
 
-    public event UnityAction OnDie;
+    public event UnityAction Dying;
+    public event UnityAction<int> MoneyChanged;
 
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-        _moneyUIText = GetComponent<UIMoney>();
-        _moneyUIText.TakeMoney(_moneys);
     }
 
     private void Update()
@@ -35,16 +33,15 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Money money;
         if(collision.GetComponent<Obstacle>() != null)
         {
-            OnDie?.Invoke();
+            Dying?.Invoke();
             enabled = false;
         }
-        if (collision.TryGetComponent<Money>(out money))
+        if (collision.TryGetComponent<Money>(out Money money))
         {
             _moneys += money.Value;
-            _moneyUIText.TakeMoney(_moneys);
+            MoneyChanged?.Invoke(_moneys);
         }
         
     }
