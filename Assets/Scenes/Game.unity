@@ -509,7 +509,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 431166368}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalPosition: {x: -4, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -995,6 +995,7 @@ GameObject:
   - component: {fileID: 1230411372}
   - component: {fileID: 1230411374}
   - component: {fileID: 1230411373}
+  - component: {fileID: 1230411375}
   m_Layer: 5
   m_Name: Moneys
   m_TagString: Untagged
@@ -1140,6 +1141,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1230411371}
   m_CullTransparentMesh: 0
+--- !u!114 &1230411375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1230411371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6950357a6b6c436439df6dd64dc60041, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _textMoney: {fileID: 1230411373}
+  _player: {fileID: 431166369}
 --- !u!1 &1343906964
 GameObject:
   m_ObjectHideFlags: 0
@@ -1379,7 +1394,7 @@ GameObject:
   - component: {fileID: 1423427769}
   - component: {fileID: 1423427768}
   m_Layer: 0
-  m_Name: ObstacleSpawner
+  m_Name: Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1403,12 +1418,14 @@ MonoBehaviour:
   _waves:
   - Template: {fileID: 5791374908864555023, guid: 22fc7bbaeb25f114fb49cf6fd858495b,
       type: 3}
-    MoneysCountForNextWave: 1
+    MoneysCountForNextWave: 50
     TimeBetweenSpawn: 3
+    Speed: 3
   - Template: {fileID: 5791374908864555023, guid: b53c42a15eaad3e4eb0f1bc0a75d9088,
       type: 3}
     MoneysCountForNextWave: 5
     TimeBetweenSpawn: 2
+    Speed: 8
   _player: {fileID: 431166369}
   _moneyTemplate: {fileID: 1439315736897839800, guid: e7611a193dd6abe4b80b272c87a38606,
     type: 3}

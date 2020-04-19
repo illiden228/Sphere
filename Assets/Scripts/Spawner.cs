@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ObstacleSpawner : MonoBehaviour
+public class Spawner : MonoBehaviour
 {
     [SerializeField] private Transform[] _spawnPoints;
     [SerializeField] private Wave[] _waves;
@@ -10,6 +10,8 @@ public class ObstacleSpawner : MonoBehaviour
     private Wave _currentWave;
     private Transform _currentSpawnPoint;
     private float _timeToNextSpawn = 0;
+    private float _timeBetweenSpawnMoneys = 0;
+    private float _delayBetweenWaves = 0;
     private int _currentWaveNumber;
 
     void Start()
@@ -21,35 +23,50 @@ public class ObstacleSpawner : MonoBehaviour
     }
 
     void Update()
-    {        
+    {
+        _timeBetweenSpawnMoneys -= Time.deltaTime;
         _timeToNextSpawn -= Time.deltaTime;
-        if(_timeToNextSpawn < 0)
+        _delayBetweenWaves -= Time.deltaTime;
+        if(_delayBetweenWaves < 0)
         {
-            SetSpawnPoint(Random.Range(0, _spawnPoints.Length));
-            CreateObstacle();
-            FillMoney();
-            _timeToNextSpawn = _currentWave.TimeBetweenSpawn;
+            if (_timeBetweenSpawnMoneys < 0)
+            {
+                if (_timeToNextSpawn < 0)
+                {
+                    SetSpawnPoint(Random.Range(0, _spawnPoints.Length));
+                    CreateTemplateGenerated(_currentWave.Template, _currentSpawnPoint);
+                    FillMoney(_currentSpawnPoint);
+                    _timeToNextSpawn = _currentWave.TimeBetweenSpawn;
+                }
+                else
+                {
+                    FillMoney();
+                }
+                _timeBetweenSpawnMoneys = 1 / _currentWave.Speed;
+            }
         }
     }
 
-    private GameObject CreateObstacle()
+    private void CreateTemplateGenerated(GameObject template, Transform position)
     {
-        return Instantiate(_currentWave.Template, _currentSpawnPoint);
+        var generatedObject = Instantiate(template, position).GetComponent<Generated>();
+        generatedObject.Init(_currentWave.Speed);
     }
 
-    private void FillMoney()
+    private void FillMoney(Transform blockSpawnPoint = null)
     {
         foreach(var spawnPoint in _spawnPoints)
         {
-            if (spawnPoint != _currentSpawnPoint)
-            {
-                Instantiate(_moneyTemplate, spawnPoint);
-            }
+            if(spawnPoint != blockSpawnPoint)
+                CreateTemplateGenerated(_moneyTemplate, spawnPoint);
         }
     }
 
     private void SetWave(int number)
     {
+        if(number != 0)
+            _delayBetweenWaves = 15f / _currentWave.Speed;
+
         _currentWave = _waves[number];
     }
 
@@ -83,4 +100,5 @@ class Wave
     public GameObject Template;
     public int MoneysCountForNextWave;
     public float TimeBetweenSpawn;
+    public float Speed;
 }

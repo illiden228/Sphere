@@ -2,16 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Money : MonoBehaviour
+public class Money : Generated
 {
     [SerializeField] private int _value;
-    [SerializeField] private float _speed;
-    public int Value  => _value;
 
-    private void Update()
-    {
-        transform.Translate(Vector3.left * _speed * Time.deltaTime);
-    }
+    public int Value => _value;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
