@@ -2,14 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Money : Generated
+public class Money : GeneratedObject
 {
-    [SerializeField] private int _value;
+    [SerializeField] private int _amount;
 
-    public int Value => _value;
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Destroy(gameObject);
-    }
+    public int Amount => _amount;
 }

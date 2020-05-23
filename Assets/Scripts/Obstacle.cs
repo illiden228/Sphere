@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
 
-public class Obstacle : Generated
+public class Obstacle : GeneratedObject
 {
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Destroy(gameObject);
-    }
+    
 }

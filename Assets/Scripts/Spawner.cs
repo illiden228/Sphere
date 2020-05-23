@@ -34,7 +34,7 @@ public class Spawner : MonoBehaviour
                 if (_timeToNextSpawn < 0)
                 {
                     SetSpawnPoint(Random.Range(0, _spawnPoints.Length));
-                    CreateTemplateGenerated(_currentWave.Template, _currentSpawnPoint);
+                    CreateTemplateGeneratedObject(_currentWave.Template, _currentSpawnPoint);
                     FillMoney(_currentSpawnPoint);
                     _timeToNextSpawn = _currentWave.TimeBetweenSpawn;
                 }
@@ -47,9 +47,9 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    private void CreateTemplateGenerated(GameObject template, Transform position)
+    private void CreateTemplateGeneratedObject(GameObject template, Transform position)
     {
-        var generatedObject = Instantiate(template, position).GetComponent<Generated>();
+        var generatedObject = Instantiate(template, position).GetComponent<GeneratedObject>();
         generatedObject.Init(_currentWave.Speed);
     }
 
@@ -58,7 +58,7 @@ public class Spawner : MonoBehaviour
         foreach(var spawnPoint in _spawnPoints)
         {
             if(spawnPoint != blockSpawnPoint)
-                CreateTemplateGenerated(_moneyTemplate, spawnPoint);
+                CreateTemplateGeneratedObject(_moneyTemplate, spawnPoint);
         }
     }
 

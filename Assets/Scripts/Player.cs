@@ -6,10 +6,10 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private float _jumpForce;
     private Rigidbody2D _rigidbody;
-    private bool _isGround = true;
-    private int _moneys = 0;
+    private bool _isGrounded = true;
+    private int _money = 0;
 
-    public int Money => _moneys;
+    public int Money => _money;
 
     public event UnityAction Dying;
     public event UnityAction<int> MoneyChanged;
@@ -21,16 +21,16 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space) && _isGround)
+        if(Input.GetKeyDown(KeyCode.Space) && _isGrounded)
         {
-            _isGround = false;
+            _isGrounded = false;
             _rigidbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        _isGround = true;
+        _isGrounded = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -42,12 +42,10 @@ public class Player : MonoBehaviour
             _rigidbody.velocity = new Vector2(0, 0);
             enabled = false;
         }
-        if (collision.TryGetComponent<Money>(out Money money))
+        if (collision.TryGetComponent(out Money money))
         {
-            _moneys += money.Value;
-            MoneyChanged?.Invoke(_moneys);
+            _money += money.Amount;
+            MoneyChanged?.Invoke(_money);
         }
-        
     }
-
 }
