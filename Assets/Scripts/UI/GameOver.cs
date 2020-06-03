@@ -8,12 +8,17 @@ public class GameOver : MonoBehaviour
 
     private void Start()
     {
-        _player.Dying += GameOverPanel;
+        _player.Dying += OnPlayerDying;
     }
 
-    private void GameOverPanel()
+    private void OnPlayerDying()
     {
         _gameOverPanel.Play("down");
+    }
+
+    private void OnDisable()
+    {
+        _player.Dying -= OnPlayerDying;
     }
 
     public void PlayAgain()

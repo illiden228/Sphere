@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class Menu : MonoBehaviour
 {
     [SerializeField] private Animator _panelAnimator;
+
     public void Play()
     {
         SceneManager.LoadScene(1);
